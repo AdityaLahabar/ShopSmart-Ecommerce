@@ -1,0 +1,37 @@
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scrolled {
+  background-color: #303f9f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  margin-right: 16px;
+}
+
+.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .menu-button {
+    display: block;
+  }
+}

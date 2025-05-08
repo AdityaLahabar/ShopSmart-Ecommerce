@@ -1,0 +1,77 @@
+<div class="container">
+  <h1>Products</h1>
+
+  <!-- Filter Panel -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+        <div class="filter-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+              <mat-option [value]="">All Categories</mat-option>
+              @for (category of categories; track category) {
+              <mat-option [value]="category">{{ category }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Min Price</mat-label>
+            <input matInput type="number" formControlName="minPrice" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Max Price</mat-label>
+            <input matInput type="number" formControlName="maxPrice" />
+          </mat-form-field>
+
+          <div class="filter-actions">
+            <button mat-raised-button color="primary" type="submit">
+              Apply Filters
+            </button>
+            <button mat-button type="button" (click)="resetFilters()">
+              Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Active Filters -->
+  @if (hasActiveFilters()) {
+  <div class="active-filters">
+    <span>Active Filters:</span>
+    @if (filterForm.value.category) {
+    <mat-chip color="primary" removable (removed)="removeFilter('category')">
+      Category: {{ filterForm.value.category }}
+    </mat-chip>
+    } @if (filterForm.value.minPrice) {
+    <mat-chip color="primary" removable (removed)="removeFilter('minPrice')">
+      Min Price: ${{ filterForm.value.minPrice }}
+    </mat-chip>
+    } @if (filterForm.value.maxPrice) {
+    <mat-chip color="primary" removable (removed)="removeFilter('maxPrice')">
+      Max Price: ${{ filterForm.value.maxPrice }}
+    </mat-chip>
+    }
+  </div>
+  }
+
+  <!-- Product Grid -->
+  @if (filteredProducts.length > 0) {
+  <div class="card-grid">
+    @for (product of filteredProducts; track product.id) {
+    <app-product-cart [product]="product"></app-product-cart>
+    }
+  </div>
+  } @else {
+  <div class="no-products">
+    <p>No products match your filters.</p>
+    <button mat-button color="primary" (click)="resetFilters()">
+      Clear Filters
+    </button>
+  </div>
+  }
+</div>

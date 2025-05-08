@@ -1,0 +1,239 @@
+<div class="container">
+  <h1>Checkout</h1>
+
+  @if (cartService.totalItems() === 0) {
+  <div class="empty-checkout">
+    <mat-icon class="empty-icon">shopping_cart</mat-icon>
+    <h2>Your cart is empty</h2>
+    <p>Add some products to your cart before proceeding to checkout.</p>
+    <button mat-raised-button color="primary" routerLink="/products">
+      BROWSE PRODUCTS
+    </button>
+  </div>
+  } @else {
+  <mat-stepper linear #stepper>
+    <!-- Shipping Address Step -->
+    <mat-step [stepControl]="shippingForm">
+      <ng-template matStepLabel>Shipping Address</ng-template>
+      <form [formGroup]="shippingForm">
+        <h2>Shipping Information</h2>
+
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="name" placeholder="John Doe" />
+            @if (shippingForm.get('name')?.invalid &&
+            shippingForm.get('name')?.touched) {
+            <mat-error>Name is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Address</mat-label>
+            <input
+              matInput
+              formControlName="address"
+              placeholder="123 Main St"
+            />
+            @if (shippingForm.get('address')?.invalid &&
+            shippingForm.get('address')?.touched) {
+            <mat-error>Address is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" placeholder="New York" />
+            @if (shippingForm.get('city')?.invalid &&
+            shippingForm.get('city')?.touched) {
+            <mat-error>City is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Postal Code</mat-label>
+            <input matInput formControlName="postalCode" placeholder="10001" />
+            @if (shippingForm.get('postalCode')?.invalid &&
+            shippingForm.get('postalCode')?.touched) {
+            <mat-error>Postal code is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="button-row">
+          <button mat-button routerLink="/cart">Back to Cart</button>
+          <button
+            mat-raised-button
+            color="primary"
+            matStepperNext
+            [disabled]="shippingForm.invalid"
+          >
+            Continue to Payment
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Payment Step -->
+    <mat-step [stepControl]="paymentForm">
+      <ng-template matStepLabel>Payment</ng-template>
+      <form [formGroup]="paymentForm">
+        <h2>Payment Information</h2>
+
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Card Number</mat-label>
+            <input
+              matInput
+              formControlName="cardNumber"
+              placeholder="1234 5678 9012 3456"
+            />
+            @if (paymentForm.get('cardNumber')?.invalid &&
+            paymentForm.get('cardNumber')?.touched) {
+            <mat-error>Valid card number is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Expiry Date</mat-label>
+            <input matInput formControlName="expiryDate" placeholder="MM/YY" />
+            @if (paymentForm.get('expiryDate')?.invalid &&
+            paymentForm.get('expiryDate')?.touched) {
+            <mat-error>Expiry date is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>CVV</mat-label>
+            <input matInput formControlName="cvv" placeholder="123" />
+            @if (paymentForm.get('cvv')?.invalid &&
+            paymentForm.get('cvv')?.touched) {
+            <mat-error>CVV is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="button-row">
+          <button mat-button matStepperPrevious>Back</button>
+          <button
+            mat-raised-button
+            color="primary"
+            matStepperNext
+            [disabled]="paymentForm.invalid"
+          >
+            Review Order
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Review Step -->
+    <mat-step>
+      <ng-template matStepLabel>Review Order</ng-template>
+
+      <div class="review-section">
+        <h2>Order Summary</h2>
+
+        <mat-card>
+          <mat-card-content>
+            <!-- Order Items -->
+            <div class="order-items">
+              @for (item of cartService.cartItems(); track item.product.id) {
+              <div class="order-item">
+                <div class="item-info">
+                  <img
+                    [src]="item.product.imageUrl"
+                    [alt]="item.product.name"
+                  />
+                  <div>
+                    <div class="item-name">{{ item.product.name }}</div>
+                    <div class="item-price">
+                      ${{ item.product.price.toFixed(2) }} × {{ item.quantity }}
+                    </div>
+                  </div>
+                </div>
+                <div class="item-total">
+                  ${{ (item.product.price * item.quantity).toFixed(2) }}
+                </div>
+              </div>
+              }
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Shipping Address -->
+            <div class="review-address">
+              <h3>Shipping Address</h3>
+              <p>{{ shippingForm.get("name")?.value }}</p>
+              <p>{{ shippingForm.get("address")?.value }}</p>
+              <p>
+                {{ shippingForm.get("city")?.value }},
+                {{ shippingForm.get("postalCode")?.value }}
+              </p>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Payment Info (masked) -->
+            <div class="review-payment">
+              <h3>Payment</h3>
+              <p>
+                Card ending in
+                {{ maskCardNumber(paymentForm.get("cardNumber")?.value) }}
+              </p>
+              <p>Expiry: {{ paymentForm.get("expiryDate")?.value }}</p>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- Order Total -->
+            <div class="order-total">
+              <div class="total-row">
+                <span>Subtotal</span>
+                <span>${{ cartService.totalPrice().toFixed(2) }}</span>
+              </div>
+              <div class="total-row">
+                <span>Shipping</span>
+                <span>Free</span>
+              </div>
+              <div class="total-row total">
+                <span>Total</span>
+                <span>${{ cartService.totalPrice().toFixed(2) }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="button-row">
+        <button mat-button matStepperPrevious>Back</button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="placeOrder()"
+          [disabled]="isProcessing"
+        >
+          <span>Place Order</span>
+        </button>
+      </div>
+    </mat-step>
+
+    <!-- Confirmation Step -->
+    <mat-step>
+      <ng-template matStepLabel>Confirmation</ng-template>
+      <div class="confirmation">
+        <mat-icon class="success-icon">check_circle</mat-icon>
+        <h2>Thank you for your order!</h2>
+        <p>Your order has been placed successfully.</p>
+        <p>Order #{{ orderNumber }}</p>
+        <div class="button-row">
+          <button mat-raised-button color="primary" routerLink="/orders">
+            View Order History
+          </button>
+          <button mat-button routerLink="/products">Continue Shopping</button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+  }
+</div>

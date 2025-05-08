@@ -1,0 +1,54 @@
+<mat-toolbar [class.scrolled]="isScrolled" color="primary">
+  <a routerLink="/" class="logo">ShopSmart</a>
+  <span class="spacer"></span>
+
+  <div class="nav-links">
+    <a mat-button routerLink="/products" routerLinkActive="active">Products</a>
+
+    @if (authService.isAdmin()) {
+    <a mat-button routerLink="/admin" routerLinkActive="active">Admin</a>
+    } @if (authService.isLoggedIn()) {
+    <a mat-button routerLink="/orders" routerLinkActive="active">My Orders</a>
+    <a mat-button routerLink="/cart" routerLinkActive="active">
+      <mat-icon
+        matBadge="{{ cartService.totalItems() }}"
+        [matBadgeHidden]="cartService.totalItems() === 0"
+        matBadgeColor="accent"
+        >shopping_cart</mat-icon
+      >
+    </a>
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      {{ authService.currentUser()?.name }}
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="authService.logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+    } @else {
+    <a mat-button routerLink="/login">Login</a>
+    }
+  </div>
+
+  <button mat-icon-button class="menu-button" [matMenuTriggerFor]="mobileMenu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #mobileMenu="matMenu">
+    <a mat-menu-item routerLink="/products">Products</a>
+
+    @if (authService.isLoggedIn()) { @if (authService.isAdmin()) {
+    <a mat-menu-item routerLink="/admin">Admin</a>
+    }
+    <a mat-menu-item routerLink="/orders">My Orders</a>
+    <a mat-menu-item routerLink="/cart">
+      Cart ({{ cartService.totalItems() }})
+    </a>
+    <button mat-menu-item (click)="authService.logout()">Logout</button>
+    } @else {
+    <a mat-menu-item routerLink="/login">Login</a>
+    }
+  </mat-menu>
+</mat-toolbar>

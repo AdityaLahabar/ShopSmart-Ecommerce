@@ -1,0 +1,68 @@
+<div class="container">
+  <h1>My Orders</h1>
+
+  @if (orders.length === 0) {
+  <div class="empty-orders">
+    <mat-icon class="empty-icon">receipt_long</mat-icon>
+    <h2>No orders yet</h2>
+    <p>You haven't placed any orders yet.</p>
+    <button mat-raised-button color="primary" routerLink="/products">
+      START SHOPPING
+    </button>
+  </div>
+  } @else {
+  <div class="orders-list">
+    @for (order of orders; track order.id) {
+    <mat-card class="order-card">
+      <mat-card-header>
+        <mat-card-title>Order #{{ order.id }}</mat-card-title>
+        <mat-card-subtitle>{{
+          order.date | date : "medium"
+        }}</mat-card-subtitle>
+        <div class="spacer"></div>
+        <mat-chip [color]="getStatusColor(order.status)" selected>{{
+          order.status
+        }}</mat-chip>
+      </mat-card-header>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-content>
+        <div class="order-items">
+          @for (item of order.items.slice(0, 3); track item.product.id) {
+          <div class="order-item">
+            <img [src]="item.product.imageUrl" [alt]="item.product.name" />
+            <div class="item-details">
+              <div class="item-name">{{ item.product.name }}</div>
+              <div class="item-price">
+                ${{ item.product.price.toFixed(2) }} × {{ item.quantity }}
+              </div>
+            </div>
+          </div>
+          } @if (order.items.length > 3) {
+          <div class="more-items">
+            + {{ order.items.length - 3 }} more items
+          </div>
+          }
+        </div>
+
+        <div class="order-total">
+          <span>Total:</span>
+          <span class="price">${{ order.total.toFixed(2) }}</span>
+        </div>
+
+        <div class="shipping-address">
+          <h3>Shipping to:</h3>
+          <p>{{ order.shippingAddress.name }}</p>
+          <p>
+            {{ order.shippingAddress.address }},
+            {{ order.shippingAddress.city }},
+            {{ order.shippingAddress.postalCode }}
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+  }
+</div>

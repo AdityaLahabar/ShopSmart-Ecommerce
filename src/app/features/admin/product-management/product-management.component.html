@@ -1,0 +1,64 @@
+<div class="container">
+  <h1>Product Management</h1>
+
+  <div class="actions-bar">
+    <button mat-raised-button color="primary" (click)="openProductDialog()">
+      <mat-icon>add</mat-icon> Add New Product
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="table-wrapper">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products; track product.id) {
+            <tr>
+              <td class="image-cell">
+                <img [src]="product.imageUrl" [alt]="product.name" />
+              </td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.category }}</td>
+              <td>${{ product.price.toFixed(2) }}</td>
+              <td>
+                <span
+                  [class.in-stock]="product.inStock"
+                  [class.out-of-stock]="!product.inStock"
+                >
+                  {{ product.inStock ? "In Stock" : "Out of Stock" }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="openProductDialog(product)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="confirmDelete(product)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

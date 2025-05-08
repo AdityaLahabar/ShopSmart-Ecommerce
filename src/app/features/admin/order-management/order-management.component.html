@@ -1,0 +1,108 @@
+<div class="container">
+  <h1>Order Management</h1>
+
+  @if (orders.length === 0) {
+  <div class="empty-orders">
+    <mat-icon>receipt_long</mat-icon>
+    <p>No orders found</p>
+  </div>
+  } @else {
+  <div class="orders-list">
+    @for (order of orders; track order.id) {
+    <mat-card class="order-card">
+      <mat-card-header>
+        <mat-card-title>Order #{{ order.id }}</mat-card-title>
+        <mat-card-subtitle>{{
+          order.date | date : "medium"
+        }}</mat-card-subtitle>
+        <div class="spacer"></div>
+        <mat-chip [color]="getStatusColor(order.status)" selected>{{
+          order.status
+        }}</mat-chip>
+      </mat-card-header>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-content>
+        <div class="order-details">
+          <div class="order-section">
+            <h3>Customer Details</h3>
+            <p>{{ order.shippingAddress.name }}</p>
+            <p>
+              Ship to: {{ order.shippingAddress.address }},
+              {{ order.shippingAddress.city }},
+              {{ order.shippingAddress.postalCode }}
+            </p>
+          </div>
+
+          <div class="order-section">
+            <h3>Order Items</h3>
+            <div class="order-items">
+              @for (item of order.items; track item.product.id) {
+              <div class="order-item">
+                <img [src]="item.product.imageUrl" [alt]="item.product.name" />
+                <div class="item-details">
+                  <div class="item-name">{{ item.product.name }}</div>
+                  <div class="item-price">
+                    ${{ item.product.price.toFixed(2) }} × {{ item.quantity }}
+                  </div>
+                </div>
+                <div class="item-total">
+                  ${{ (item.product.price * item.quantity).toFixed(2) }}
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="order-total">
+            <span>Total:</span>
+            <span class="price">${{ order.total.toFixed(2) }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button [matMenuTriggerFor]="statusMenu">
+          UPDATE STATUS <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #statusMenu="matMenu">
+          <button
+            mat-menu-item
+            (click)="updateOrderStatus(order.id, 'pending')"
+            [disabled]="order.status === 'pending'"
+          >
+            <mat-icon color="warn">hourglass_empty</mat-icon>
+            <span>Pending</span>
+          </button>
+          <button
+            mat-menu-item
+            (click)="updateOrderStatus(order.id, 'processing')"
+            [disabled]="order.status === 'processing'"
+          >
+            <mat-icon color="accent">settings</mat-icon>
+            <span>Processing</span>
+          </button>
+          <button
+            mat-menu-item
+            (click)="updateOrderStatus(order.id, 'shipped')"
+            [disabled]="order.status === 'shipped'"
+          >
+            <mat-icon color="primary">local_shipping</mat-icon>
+            <span>Shipped</span>
+          </button>
+          <button
+            mat-menu-item
+            (click)="updateOrderStatus(order.id, 'delivered')"
+            [disabled]="order.status === 'delivered'"
+          >
+            <mat-icon color="primary">check_circle</mat-icon>
+            <span>Delivered</span>
+          </button>
+        </mat-menu>
+      </mat-card-actions>
+    </mat-card>
+    }
+  </div>
+  }
+</div>

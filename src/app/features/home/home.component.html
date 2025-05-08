@@ -1,0 +1,38 @@
+<div class="hero">
+  <div class="hero-content">
+    <h1>Welcome to ShopSmart</h1>
+    <p>Find the best products at the best prices</p>
+    <a mat-raised-button color="primary" routerLink="/products">SHOP NOW</a>
+  </div>
+</div>
+
+<div class="container">
+  <section class="featured-section">
+    <h2>Featured Products</h2>
+    <div class="card-grid">
+      @for (product of featuredProducts; track product.id) {
+      <app-product-cart [product]="product"></app-product-cart>
+      }
+    </div>
+    <div class="text-center mt-2">
+      <a mat-button color="primary" routerLink="/products">View All Products</a>
+    </div>
+  </section>
+
+  <section class="categories-section">
+    <h2>Shop by Category</h2>
+    <div class="categories-grid">
+      @for (category of categories; track category) {
+      <mat-card
+        class="category-card"
+        routerLink="/products"
+        [queryParams]="{ category: category }"
+      >
+        <mat-card-content>
+          <h3>{{ category }}</h3>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+  </section>
+</div>

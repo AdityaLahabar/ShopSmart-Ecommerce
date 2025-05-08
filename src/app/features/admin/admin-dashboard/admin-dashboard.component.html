@@ -1,0 +1,72 @@
+<div class="container">
+  <h1>Admin Dashboard</h1>
+
+  <div class="dashboard-grid">
+    <mat-card class="dashboard-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>inventory_2</mat-icon>
+        </div>
+        <div class="card-stats">
+          <div class="stat-value">{{ totalProducts }}</div>
+          <div class="stat-label">Products</div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button color="primary" routerLink="/admin/products"
+          >MANAGE PRODUCTS</a
+        >
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="dashboard-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>shopping_bag</mat-icon>
+        </div>
+        <div class="card-stats">
+          <div class="stat-value">{{ totalOrders }}</div>
+          <div class="stat-label">Orders</div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button color="primary" routerLink="/admin/orders">VIEW ORDERS</a>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="dashboard-card">
+      <mat-card-content>
+        <div class="card-icon">
+          <mat-icon>category</mat-icon>
+        </div>
+        <div class="card-stats">
+          <div class="stat-value">{{ totalCategories }}</div>
+          <div class="stat-label">Categories</div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button color="primary" routerLink="/admin/products"
+          >MANAGE CATEGORIES</a
+        >
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="actions-panel">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid">
+      <a mat-raised-button color="primary" routerLink="/admin/products">
+        <mat-icon>add</mat-icon>
+        Add New Product
+      </a>
+      <a mat-raised-button color="accent" routerLink="/admin/orders">
+        <mat-icon>receipt</mat-icon>
+        Process Orders
+      </a>
+      <a mat-raised-button routerLink="/products">
+        <mat-icon>storefront</mat-icon>
+        View Store
+      </a>
+    </div>
+  </div>
+</div>
