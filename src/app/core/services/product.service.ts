@@ -136,6 +136,33 @@ export class ProductService {
         imageUrl: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=600',
         category: 'Electronics',
         inStock: true
+      },
+      {
+        id: 7,
+        name: 'Coffee Maker',
+        description: 'Programmable coffee maker with built-in grinder',
+        price: 129.99,
+        imageUrl: 'https://images.pexels.com/photos/31974039/pexels-photo-31974039/free-photo-of-modern-kitchen-counter-with-smart-appliances.jpeg?auto=compress&cs=tinysrgb&w=600',
+        category: 'Home',
+        inStock: true
+      },
+      {
+        id: 8,
+        name: 'Dumbell',
+        description: 'Dumbell for fitness',
+        price: 29.99,
+        imageUrl: 'https://images.pexels.com/photos/39671/physiotherapy-weight-training-dumbbell-exercise-balls-39671.jpeg?auto=compress&cs=tinysrgb&w=600',
+        category: 'Fitness',
+        inStock: true
+      },
+      {
+        id: 9,
+        name: 'Smart Watch',
+        description: 'Track fitness and receive notifications',
+        price: 199.99,
+        imageUrl: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=600',
+        category: 'Electronics',
+        inStock: true
       }
     ];
     
